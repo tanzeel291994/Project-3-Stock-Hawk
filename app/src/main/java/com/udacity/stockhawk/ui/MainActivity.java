@@ -29,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener,
         StockAdapter.StockAdapterOnClickHandler {
@@ -41,11 +42,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @BindView(R.id.error)
     TextView error;
     private StockAdapter adapter;
-
+    public static Context contextStock;
     @Override
     public void onClick(String symbol) {
         Timber.d("Symbol clicked: %s", symbol);
         Intent intent=new Intent(this,StockHistory.class);
+        intent.putExtra("symbol",symbol);
         startActivity(intent);
 
     }
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        contextStock=getApplicationContext();
 
         adapter = new StockAdapter(this, this);
         stockRecyclerView.setAdapter(adapter);
