@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.ui.MainActivity;
@@ -127,7 +129,7 @@ public final class QuoteSyncJob {
 
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.contextStock,"Please add a valid symbol",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.contextStock, R.string.invalid_symbol,Toast.LENGTH_LONG).show();
                         }
                     });}
             }
