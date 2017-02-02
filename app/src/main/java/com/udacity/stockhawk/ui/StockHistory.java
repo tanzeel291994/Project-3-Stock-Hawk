@@ -11,20 +11,27 @@ import android.os.Bundle;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import timber.log.Timber;
 
@@ -35,7 +42,6 @@ public class StockHistory extends AppCompatActivity {
     ArrayList<Entry> dataList;
     ArrayList<String> labels;
     LineDataSet dataset;
-    LineDataSet xdataset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,26 +59,14 @@ public class StockHistory extends AppCompatActivity {
                 null,
                 null,
                 Contract.Quote.COLUMN_SYMBOL);
-        float j=0;
-        Calendar cl = Calendar.getInstance();
-
-        //String date = "" + cl.get(Calendar.DAY_OF_MONTH) + ":" + cl.get(Calendar.MONTH) + ":" + cl.get(Calendar.YEAR);
-        //String time = "" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND);
         if (c.moveToFirst()){
             do{
                 String data = c.getString(c.getColumnIndex(Contract.Quote.COLUMN_HISTORY));
                 String[] xy=data.split("\n");
-                Float ref_time=0f;
                 for (int i=xy.length-1;i>=0;i--) {
                     String[] data_points = xy[i].trim().split(",");
                     Float curr_value=Float.parseFloat(data_points[0]);
-                    if(i==xy.length)
-                        ref_time=curr_value;
-                    //Timber.d("points %s ", data_points[0]);
-                   // cl.setTimeInMillis(Long.parseLong(data_points[0])-ref_time);
-                    //labels.add(cl.get(Calendar.MONTH)+"-"+cl.get(Calendar.YEAR));
-                    dataList.add(new Entry(curr_value-ref_time,Float.parseFloat(data_points[1])));
-                    j++;
+                    dataList.add(new Entry(curr_value,Float.parseFloat(data_points[1])));
                 }
 
             }while(c.moveToNext());
@@ -89,8 +83,18 @@ public class StockHistory extends AppCompatActivity {
         lineChart.setDescription(d);
         lineChart.setTouchEnabled(true);
         lineChart.setPinchZoom(true);
-        lineChart.getXAxis().setEnabled(false);
+        XAxis xAxis =lineChart.getXAxis();
+        xAxis.setGranularity(720f);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
 
+            private SimpleDateFormat mFormat = new SimpleDateFormat("MMM-yy", Locale.US);
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+
+                return mFormat.format(new Date((long)value));
+            }
+        });
 
 
 
