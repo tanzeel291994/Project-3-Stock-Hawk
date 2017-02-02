@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             swipeRefreshLayout.setRefreshing(false);
             error.setText(getString(R.string.error_no_stocks));
             error.setVisibility(View.VISIBLE);
+            new ErrorFragment().show(getFragmentManager(), "StockDialogFragment");
         } else {
             error.setVisibility(View.GONE);
         }

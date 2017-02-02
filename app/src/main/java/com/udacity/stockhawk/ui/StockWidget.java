@@ -8,26 +8,15 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.udacity.stockhawk.R;
+import com.udacity.stockhawk.StockHawkApp;
+import com.udacity.stockhawk.sync.QuoteSyncJob;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class StockWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
 
-
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.stock_widget);
-       // views.setTextViewText(R.id.appwidget_text, widgetText);
-        Intent adapter = new Intent(context, StockWidgetService.class);
-        adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        views.setRemoteAdapter(R.id.stock_list_widget, adapter);
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.stock_list_widget);
-    }
     /*
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -61,6 +50,7 @@ public class StockWidget extends AppWidgetProvider {
             //updateAppWidget(context, appWidgetManager, appWidgetId);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.stock_list_widget);
         }
+//        QuoteSyncJob.initialize(StockHawkApp.global_context);
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 

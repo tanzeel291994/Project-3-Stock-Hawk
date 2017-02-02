@@ -35,30 +35,39 @@ import java.util.concurrent.TimeUnit;
 
 import timber.log.Timber;
 
-public class StockHistory extends AppCompatActivity {
+public class StockHistory extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     String symbol;
     LineChart lineChart;
     ArrayList<Entry> dataList;
-    ArrayList<String> labels;
     LineDataSet dataset;
+    private static final int STOCK_SYMBOL_LOADER = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_history);
         symbol = getIntent().getStringExtra("symbol");
-        String [] projection={Contract.Quote.COLUMN_HISTORY};
+
         lineChart = (LineChart) findViewById(R.id.chart);
 
         dataList=new ArrayList();
-        labels=new ArrayList();
-        Cursor c=this.getContentResolver().query(
+        getSupportLoaderManager().initLoader(STOCK_SYMBOL_LOADER, null, this);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String [] projection={Contract.Quote.COLUMN_HISTORY};
+        return new CursorLoader(this,
                 Contract.Quote.makeUriForStock(symbol),
                 projection,
-                null,
-                null,
-                Contract.Quote.COLUMN_SYMBOL);
+                null, null, Contract.Quote.COLUMN_SYMBOL);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor c)
+    {
         if (c.moveToFirst()){
             do{
                 String data = c.getString(c.getColumnIndex(Contract.Quote.COLUMN_HISTORY));
@@ -74,7 +83,6 @@ public class StockHistory extends AppCompatActivity {
         c.close();
         dataset = new LineDataSet(dataList,"price");
         dataset.setDrawFilled(true);
-       // LineDataSet labelSet = new LineDataSet(labels,"time");
         LineData data = new LineData( dataset);
         lineChart.setData(data);
         lineChart.setBackgroundColor(Color.WHITE);
@@ -96,9 +104,10 @@ public class StockHistory extends AppCompatActivity {
             }
         });
 
-
-
     }
 
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
 }

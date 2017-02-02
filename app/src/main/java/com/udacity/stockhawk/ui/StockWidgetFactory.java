@@ -13,9 +13,6 @@ import com.udacity.stockhawk.data.Contract;
 
 import timber.log.Timber;
 
-/**
- * Created by user on 2/1/2017.
- */
 
 public class StockWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
     private Cursor mCursor;

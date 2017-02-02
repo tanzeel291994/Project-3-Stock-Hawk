@@ -8,7 +8,7 @@
 
     <string name="pref_display_mode_key" translatable="false">displayMode</string>
     <string name="pref_display_mode_default" translatable="false">@string/pref_display_mode_percentage_key</string>
-<string name="invalid_symbol">Please add a valid symbol </string>
+    <string name="invalid_symbol">Please add a valid symbol </string>
     <string name="pref_display_mode_absolute_key" translatable="false">absolute</string>
     <string name="pref_display_mode_percentage_key" translatable="false">percentage</string>
 
@@ -22,6 +22,7 @@
 
 
     <string name="dialog_title">Add Stock</string>
+    <string name="error_dialog_title">Error</string>
     <string name="dialog_hint">Symbol (e.g. GOOG)</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_add">Add</string>
@@ -33,5 +34,8 @@
     <string name="toast_no_connectivity">Will refresh when network available.</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
